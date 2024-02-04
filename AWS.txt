@@ -1,0 +1,14 @@
+sudo apt-get update
+git clone https://github.com/yeshwanthlm/django-on-ec2.git
+sudo apt install python3-pip -y
+pip install django
+python3 manage.py makemigrations
+python3 manage.py createsuperuser
+python3 manage.py runserver
+http://127.0.0.1:8000/admin
+http://51.20.85.38:8000/todos 
+
+
+robert
+aws_access_key_id = AKIAW3MEFBJAGHDIJ4MJ
+aws_secret_access_key = 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

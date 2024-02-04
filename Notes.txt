@@ -1,0 +1,83 @@
+sudo apt-get update
+python --version
+pip --version
+python -m venv virt
+source venv/Scripts/activate
+Scripts/activate  (in virtual env directory)
+pip freeze
+pip install mysql
+pip install django
+pip freeze > requirements.txt
+pip freeze
+django-admin startproject myclub_website
+cd myclub_website
+mypy events/models.py
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+python manage.py startapp events 
+python manage.py startapp members
+python manage.py startapp myblog
+python manage.py startapp payments
+python manage.py startapp subscriptions
+python manage.py startapp blogs
+python manage.py collectstatic
+
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+import os
+docker-compose build
+docker-compose run --rm app sh -c "python manage.py startapp core"
+docker images 
+docker ps -a
+docker-compose run --rm app sh -c "python manage.py startapp core" 
+docker image rm   (image id)
+docker system prune -a   (remove all images)
+docker build -t myclub_website .
+docker run -p 8000:8000 myclub_website:latest
+docker-compose up
+docker-compose up -d
+docker-compose down
+docker-compose up --build
+docker-compose run --rm app sh -c "python manage.py startapp core"
+docker-compose run --rm app sh -c "python manage.py makemigrations"
+docker-compose run --rm app sh -c "python manage.py migrate"
+docker-compose run --rm app sh -c "python manage.py createsuperuser"
+docker-compose run --rm app sh -c "python manage.py runserver"
+docker-compose run --rm app sh -c "python manage.py collectstatic"
+docker-compose run --rm app sh -c "python manage.py test"
+docker-compose run --rm app sh -c "python manage.py test && flake8"
+docker-compose run --rm app sh -c "python manage.py test && flake8 && mypy"
+docker-compose run --rm app sh -c "python manage.py test && flake8 && mypy && coverage run --source='.' manage.py test && coverage report"
+
+docker start (container id)
+docker stop (container id)
+docker ps -a
+docker images
+docker image rm (image id)
+docker system prune -a
+docker-compose up --build
+
+docker run --name myclub_website -p 8000:8000 myclub_website:latest
+docker run --name myclub_website -p 8000:8000 -d myclub_website:latest
+
+
+docker-compose run --rm app sh -c "python manage.py startapp core"
+docker-compose run --rm app sh -c "python manage.py makemigrations"
+
+docker-compose -f docker-compose-deploy.yml down --volumes
+docker-compose -f docker-compose-deploy.yml up --build
+docker-compose -f docker-compose-deploy.yml up
+
+docker-compose -f docker-compose-deploy.yml run --rm app sh -c "python manage.py createsuperuser"
+
+
+
+1.10.42
+https://www.youtube.com/watch?v=mScd-Pc_pX0
+
+
+
+
