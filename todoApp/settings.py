@@ -70,7 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'todoApp.wsgi.application'
 
-
+"""
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -78,6 +78,19 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'MYDATA',
+        'USER': 'admin',
+        'PASSWORD': 'Rxi9Eo4BVR4jNaABZHfn',
+        'HOST': 'awscc.cp6ig0sgmqkk.eu-north-1.rds.amazonaws.com',
+        'PORT': '3306'
+
     }
 }
 
