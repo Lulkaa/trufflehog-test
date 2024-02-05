@@ -12,3 +12,51 @@ http://51.20.85.38:8000/todos
 robert
 aws_access_key_id = AKIAW3MEFBJAGHDIJ4MJ
 aws_secret_access_key = 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
+
+
+AWS
+kleynrobert57@gmail.com
+Stinkie@1948
+
+IAM
+https://471112944192.signin.aws.amazon.com/console
+User name
+robert
+Stinkie@1948
+
+---------------------------------------------------------
+
+[robert]
+# The access key and secret key pair identify your account and grant access to AWS.
+
+aws_access_key_id = AKIAW3MEFBJAGHDIJ4MJ
+
+# Treat your secret key like a password. Never share your secret key with anyone. Do 
+# not post it in online forums, or store it in a source control system. If your secret 
+# key is ever disclosed, immediately use IAM to delete the access key and secret key
+# and create a new key pair. Then, update this file with the replacement key details.
+
+aws_secret_access_key = dbbXpVkjFwYnrxqepLx5ayn9F/oLlbXz4bVCLBLE
+
+-------------------------------------------------------------------
+
+
+Mysql
+database-2
+admin
+Stinkie@1948
+3306
+Rxi9Eo4BVR4jNaABZHfn
+
+'NAME': 'MYDATA',
+        'USER': 'admin',
+        'PASSWORD': 'Rxi9Eo4BVR4jNaABZHfn',
+        'HOST': 'awscc.cp6ig0sgmqkk.eu-north-1.rds.amazonaws.com',
+        'PORT': '3306'
+
+
+51.20.95.0
+
+51.20.85.38
+
+
