@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+Change to Database
 """
 DATABASES = {
     'default': {
