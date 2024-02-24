@@ -1,0 +1,34 @@
+Deploy a Django web app with Nginx to Amazon EC2
+sudo apt-get update
+sudo apt-get upgrade
+python3 --version
+sudo apt-get install python3-venv
+python3 -m venv env
+source env/bin/activate
+git clone https://github.com/robert1948/django-on-ec2.git
+sudo apt-get install -y nginx
+pip install gunicorn
+pip list 
+17:30
+sudo apt-get install supervisor 
+cd /etc/supervisor/conf.d/
+sudo touch gunicorn.conf
+sudo nano gunicorn.conf
+21:00
+mkdir /var/log/gunicorn
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl status
+25:30
+sudo touch django.conf
+sudo nano django.conf
+30:00
+sudo nginx -t
+sudo ln  django.conf /etc/nginx/sites-enabled/
+sudo service nginx restart
+
+
+cd django-on-ec2
+pip install -r requirements.txt
+python manage.py runserver
+
