@@ -18,8 +18,36 @@ jobs:
           fetch-depth: 0 
       
       - name: Run TruffleHog scan
-        uses: trufflesecurity/trufflehog@main
-        with:
-          path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
+        run: |
+          echo "🔍 Scanning entire repository history for secrets..."
+          
+          docker run --rm -v "$PWD:/scan" \
+            trufflesecurity/trufflehog:latest \
+            git file:///scan \
+            --json \
+            --no-update \
+            --fail > scan_results.json 2>&1 || true
+          
+          # Показати результати в консолі
+          if [ -s scan_results.json ]; then
+            echo "::group::TruffleHog Results"
+            cat scan_results.json | jq -r 'select(.Raw != null) | 
+              "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+              "  Found Secret:\n" +
+              "  Detector: \(.DetectorName)\n" +
+              "  File: \(.SourceMetadata.Data.Git.file)\n" +
+              "  Line: \(.SourceMetadata.Data.Git.line)\n" +
+              "  Commit: \(.SourceMetadata.Data.Git.commit)\n" +
+              "  Raw: \(.Raw)\n" +
+              "  Verified: \(.Verified)\n" +
+              "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            ' || cat scan_results.json
+            echo "::endgroup::"
+            
+            # Підрахувати кількість знайдених секретів
+            SECRET_COUNT=$(cat scan_results.json | jq -s 'length')
+            echo "::error:: Found $SECRET_COUNT secret(s) in repository!"
+            exit 1
+          else
+            echo " No secrets detected!"
+          fi
