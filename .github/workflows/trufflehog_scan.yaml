@@ -10,6 +10,7 @@ jobs:
   secret-scan:
     name: TruffleHog Secret Detection
     runs-on: ubuntu-latest
+
     
     steps:
       - name: Checkout code
