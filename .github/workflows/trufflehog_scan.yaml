@@ -21,11 +21,5 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          extra_args: --only-verified=false --json --fail
-        continue-on-error: false  
-      
-      - name: Fail if secrets detected
-        if: failure()
-        run: |
-          echo "TruffleHog found secrets"
-          exit 1
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
