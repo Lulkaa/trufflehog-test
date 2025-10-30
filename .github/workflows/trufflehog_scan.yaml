@@ -1,39 +1,31 @@
 name: Trufflehog scanning 
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
-
-permissions:
-  contents: read
-  id-token: write
-  issues: write
-  pull-requests: write
+      - master
 
 jobs:
-  TruffleHog:
+  secret-scan:
+    name: TruffleHog Secret Detection
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+    
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: TruffleHog OSS
-        id: trufflehog
+          fetch-depth: 0 
+      
+      - name: Run TruffleHog scan
         uses: trufflesecurity/trufflehog@main
-        continue-on-error: true
         with:
           path: ./
-          base: "${{ github.event.repository.default_branch }}"
-          head: HEAD
-          extra_args: --debug
-
-      - name: Scan Results Status
-        if: steps.trufflehog.outcome == 'failure'
-        run: exit 1
+          extra_args: --only-verified=false --json --fail
+        continue-on-error: false  
+      
+      - name: Fail if secrets detected
+        if: failure()
+        run: |
+          echo "TruffleHog found secrets"
+          exit 1
