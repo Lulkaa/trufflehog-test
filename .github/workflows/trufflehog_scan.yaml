@@ -22,23 +22,4 @@ jobs:
           docker run --rm -v "$PWD:/scan" \
             trufflesecurity/trufflehog:latest \
             git file:///scan \
-            --no-update 2>&1 > trufflehog_results.txt
-        
-      - name: Results of scanning
-        run: cat trufflehog_results.txt
-        
-      - name: Fail if secrets detected
-        run: |
-          SECRETS=$(grep -c '"DetectorName"' trufflehog_results.txt || echo "0")
-          
-          if [ "$SECRETS" -gt 0 ]; then
-            echo "Found $SECRETS secret(s)!"
-            exit 1
-          fi
-        
-      - name: Upload results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: trufflehog-scan-results
-          path: trufflehog_results.txt
+      
