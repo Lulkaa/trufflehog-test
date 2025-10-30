@@ -18,8 +18,24 @@ jobs:
           fetch-depth: 0 
       
       - name: Run TruffleHog scan
-        uses: trufflesecurity/trufflehog@main
+        run: |
+          docker run --rm -v "$PWD:/scan" \
+            trufflesecurity/trufflehog:latest \
+            git file:///scan \
+            --json \
+            --no-update 2>&1 > trufflehog_results.txt
+          
+          SECRETS=$(grep -c '"DetectorName"' trufflehog_results.txt || echo "0")
+          
+          if [ "$SECRETS" -gt 0 ]; then
+            exit 1
+          fi
+      - name: Results of scanning
+        run: cat trufflehog_results.txt
+        
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
+          name: trufflehog-scan-results
+          path: trufflehog_results.txt
