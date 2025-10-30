@@ -22,6 +22,7 @@ jobs:
           docker run --rm -v "$PWD:/scan" \
             trufflesecurity/trufflehog:latest \
             git file:///scan  2>&1 > trufflehog_results.txt
+
       
       - name: Results of scanning
         run: cat trufflehog_results.txt
