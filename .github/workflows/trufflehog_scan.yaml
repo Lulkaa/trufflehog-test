@@ -36,7 +36,6 @@ jobs:
             echo "Found $SECRETS secret(s)!"
             exit 1
           fi
-        
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
