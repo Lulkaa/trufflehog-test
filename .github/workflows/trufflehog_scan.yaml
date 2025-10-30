@@ -21,5 +21,31 @@ jobs:
         run: |
           docker run --rm -v "$PWD:/scan" \
             trufflesecurity/trufflehog:latest \
-            git file:///scan \
+            git file:///scan  2>&1 > trufflehog_results.txt
+      
+      - name: Results of scanning
+        run: cat trufflehog_results.txt
+      
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: trufflehog-scan-results
+          path: trufflehog_results.txt
+   
+      - name: Comment to PR with artifact link
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+
+            const body = `
+            📎 [Download Trufflehog report here](${runUrl}) ` 
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });
       
