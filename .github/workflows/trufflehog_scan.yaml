@@ -1,5 +1,4 @@
 name: Trufflehog scanning 
-
 on:
   pull_request:
     branches:
