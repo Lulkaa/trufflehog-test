@@ -30,6 +30,7 @@ jobs:
           if [ "$SECRETS" -gt 0 ]; then
             exit 1
           fi
+          
       - name: Results of scanning
         run: cat trufflehog_results.txt
         
