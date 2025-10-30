@@ -24,14 +24,18 @@ jobs:
             git file:///scan \
             --json \
             --no-update 2>&1 > trufflehog_results.txt
-          
+        
+      - name: Results of scanning
+        run: cat trufflehog_results.txt
+        
+      - name: Fail if secrets detected
+        run: |
           SECRETS=$(grep -c '"DetectorName"' trufflehog_results.txt || echo "0")
           
           if [ "$SECRETS" -gt 0 ]; then
+            echo "Found $SECRETS secret(s)!"
             exit 1
           fi
-      - name: Results of scanning
-        run: cat trufflehog_results.txt
         
       - name: Upload results
         if: always()
