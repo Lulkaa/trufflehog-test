@@ -1,3 +1,29 @@
+# 📌 Purpose:
+#   This workflow runs TruffleHog secret scanning on Pull Requests to detect
+#   exposed secrets, API keys, tokens, and credentials in the codebase.
+#
+# 🔍 What it does:
+#   • Checks out the repository with full git history
+#   • Runs TruffleHog scanner using Docker container
+#   • Generates both JSON and TXT format reports
+#   • Displays scan results in workflow logs
+#   • Uploads reports as build artifacts
+#   • Parses JSON results and builds a formatted PR comment
+#   • Posts comment to PR with:
+#       - Summary of found secrets
+#       - Details of each vulnerability (file, commit, detector type, verification status)
+#       - Link to download full reports
+#   • Fails the workflow if any secrets are detected
+#
+# ⚙️ Triggers:
+#   • Pull Requests to main or master branches
+#
+# 📄 Output:
+#   - trufflehog_results.json → Machine-readable NDJSON format with full details
+#   - trufflehog_results.txt  → Human-readable console output
+#   - PR comment with vulnerability details and artifact download link
+#   - Workflow fails (exit 1) if secrets are found to block PR merge
+
 name: Trufflehog scanning 
 
 on:
