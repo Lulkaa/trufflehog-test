@@ -30,7 +30,6 @@ jobs:
       - name: Results of scanning(JSON)
         run: cat trufflehog_results.json
         
-        
       - name: Results of scanning(TXT)
         run:  cat trufflehog_results.txt
          
