@@ -42,14 +42,14 @@ const mdRow = (v) => {
 };
 
 const header = hasIssues
-  ? `## ‼️WARNING‼️  TruffleHog found ${vulnerabilities.length} potential secret(s)`
+  ? `## ‼️WARNING‼️  TruffleHog found ${vulnerabilities.length} potential secret(s).`
   : `## TruffleHog: No vulnerabilities found`;
 
 const body = [
   header,
   '',
-  hasIssues ? '###Details of found secrets:\n' : '',
-  hasIssues ? vulnerabilities.map(mdRow).join('\n---\n') : '🎉 Scan completed successfully! No secrets or tokens detected.',
+  hasIssues ? '##Details of found secrets:\n' : '',
+  hasIssues ? vulnerabilities.map(mdRow).join('\n---\n') : '✅ Scan completed successfully! No secrets or tokens detected.',
   '',
   
 ].join('\n');
