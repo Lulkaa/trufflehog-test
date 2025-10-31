@@ -17,45 +17,64 @@ jobs:
         with:
           fetch-depth: 0 
       
-      - name: Run TruffleHog scan
+      - name: Run TruffleHog scan(JSON/TXT)
         run: |
           docker run --rm -v "$PWD:/scan" \
             trufflesecurity/trufflehog:latest \
-            git file:///scan  --json 2>&1 > trufflehog_results.json
-      
-      - name: Results of scanning
+            git file:///scan  --json 2>&1 > trufflehog_results.json || true
+            
+          docker run --rm -v "$PWD:/scan" \
+           trufflesecurity/trufflehog:latest \
+           git file:///scan 2>&1 > trufflehog_results.txt || true
+           
+      - name: Results of scanning(JSON)
         run: cat trufflehog_results.json
-    
+        
+        
+      - name: Results of scanning(TXT)
+        run:  cat trufflehog_results.txt
+         
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
           name: trufflehog-scan-results
-          path: trufflehog_results.json
-   
-      - name: Comment to PR with artifact link
+          path: |
+           trufflehog_results.json
+           trufflehog_results.txt
+          
+     
+      - name: Build PR comment
+        id: parse
+        run: node .github/workflows/pretty_comment_trufflehog.js
+     
+      - name: Comment Semgrep report
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
+
             const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
-            const report = fs.readFileSync('trufflehog_results.json', 'utf8');
-            
-            const body = `
-            📎 [Download Trufflehog report here](${runUrl}) ` 
-            
-            await github.rest.issues.createComment({
+            const report = fs.readFileSync('pretty_comment.md', 'utf8');
+
+            const body = [
+              `📎 [Download Semgrep TXT & JSON report here](${runUrl})`,
+              '### Trufflehog Scan Report Results',
+              '',
+              
+              report,
+              
+              ].join('\n');
+
+              await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body
-            });
-      
-      - name: Fail if secrets detected
+              body,
+              });
+      # -------- New: fail job if issues present ----------
+      - name: Fail if issues present
+        if: steps.parse.outputs.has_issues == 'true'
         run: |
-          SECRETS=$(grep -c "Found unverified result\|Found verified result" trufflehog_results.txt || echo "0")
-          
-          if [ "$SECRETS" -gt 0 ]; then
-            echo "Found $SECRETS secret(s)!"
-            exit 1
-          fi
+          echo "Failing the job."
+          exit 1
