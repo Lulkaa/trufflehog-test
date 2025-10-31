@@ -24,7 +24,7 @@ jobs:
             git file:///scan  --json 2>&1 > trufflehog_results.json
       
       - name: Results of scanning
-        run: cat trufflehog_results.txt
+        run: cat trufflehog_results.json
     
       - name: Upload results
         uses: actions/upload-artifact@v4
