@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = 'trufflehog_results.json';
 
-// Read the file
+
 let raw = fs.readFileSync(path, 'utf8');
 
 const lines = raw.trim().split('\n').filter(line => line.trim());
