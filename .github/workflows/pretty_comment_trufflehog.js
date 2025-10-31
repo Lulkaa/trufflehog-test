@@ -16,6 +16,7 @@ for (const line of lines) {
   }
 }
 
+
 const hasIssues = vulnerabilities.length > 0;
 
 const mdRow = (v) => {
